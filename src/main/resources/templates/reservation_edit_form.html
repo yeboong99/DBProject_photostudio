@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 수정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, input, select {
+            margin-bottom: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>예약 수정</h1>
+    <form th:action="@{'/reservation/edit/' + ${reservation.id}}" th:object="${reservation}" method="post">
+        <label>고객</label>
+        <select th:field="*{customerId.id}">
+            <option th:each="customer : ${customerList}" th:value="${customer.id}" th:text="${customer.name}"></option>
+        </select>
+
+        <label>방</label>
+        <select th:field="*{roomId.id}">
+            <option th:each="room : ${roomList}" th:value="${room.id}" th:text="${room.name}"></option>
+        </select>
+
+        <label for="timeSlot">시간</label>
+        <select name="timeSlot" required>
+            <option value="10:00-11:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('10:00')}">10:00 ~ 11:00</option>
+            <option value="11:00-12:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('11:00')}">11:00 ~ 12:00</option>
+            <option value="12:00-13:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('12:00')}">12:00 ~ 13:00</option>
+            <option value="13:00-14:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('13:00')}">13:00 ~ 14:00</option>
+            <option value="14:00-15:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('14:00')}">14:00 ~ 15:00</option>
+            <option value="15:00-16:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('15:00')}">15:00 ~ 16:00</option>
+            <option value="16:00-17:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('16:00')}">16:00 ~ 17:00</option>
+            <option value="17:00-18:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('17:00')}">17:00 ~ 18:00</option>
+            <option value="18:00-19:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('18:00')}">18:00 ~ 19:00</option>
+            <option value="19:00-20:00" th:selected="${reservation.startTime == T(java.time.LocalTime).parse('19:00')}">19:00 ~ 20:00</option>
+        </select>
+
+        <label>장비</label>
+        <div th:each="equipment : ${equipmentList}">
+            <input type="checkbox" name="equipmentIds" th:value="${equipment.id}"
+                   th:checked="${#lists.contains(reservation.equipments, equipment)}"/>
+            <span th:text="${equipment.name}"></span>
+        </div>
+
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+        <button type="submit" class="btn">수정</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장비 현황 - 포토스튜디오 관리 프로그램</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .container {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .equipment-box {
+            background-color: #ddd;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .equipment-details {
+            margin-top: 10px;
+        }
+        .equipment-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .equipment-table th, .equipment-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .equipment-table th {
+            background-color: #f2f2f2;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        footer p {
+            margin: 5px 0; /* 텍스트와 푸터 가장자리 사이의 마진을 설정 */
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>장비 현황</h1>
+</header>
+<nav>
+    <!-- 네비게이션 링크 -->
+</nav>
+<main class="container">
+    <div class="form-container">
+        <h3>장비 추가</h3>
+        <form id="add-equipment-form" th:action="@{/equipment/add}" method="post">
+            <select id="equipment-type" name="category.id">
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+            <input type="text" id="equipment-name" name="name" placeholder="이름" required>
+            <select id="equipment-status" name="status" required>
+                <option value="S">S</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+            <input type="text" id="equipment-price" name="price" placeholder="가격" required>
+            <input type="text" id="equipment-image" name="image_path" placeholder="이미지 주소" required>
+            <button type="submit">추가</button>
+        </form>
+    </div>
+
+    <!-- 장비 목록 표 -->
+    <table id="equipment-table" class="equipment-table">
+        <tr>
+            <th>종류</th>
+            <th>이름</th>
+            <th>상태</th>
+            <th>가격</th>
+            <th>이미지</th> <!-- 이미지 열 추가 -->
+            <th>편집</th> <!-- 편집 열 추가 -->
+            <th>제거</th>
+        </tr>
+        <tr th:each="equipment : ${equipmentList}">
+            <td th:text="${equipment.category.name}"></td>
+            <td th:text="${equipment.name}"></td>
+            <td th:text="${equipment.status}"></td>
+            <td th:text="${equipment.price}"></td>
+            <!-- 이미지 열 추가 -->
+            <td><img th:src="${equipment.image_path}" alt="물품 이미지" class="equipment-image" style="width: 225px; height: 225px;"></td>
+            <!-- 편집 열 추가 -->
+            <td><a th:href="@{'/equipment/edit/' + ${equipment.id}}">편집</a></td>
+            <td><a th:href="@{'/equipment/delete/' + ${equipment.id}}">제거</a></td>
+        </tr>
+    </table>
+</main>
+<footer>
+    <p>&copy; 2024 포토스튜디오 관리 프로그램</p>
+</footer>
+</body>
+</html>

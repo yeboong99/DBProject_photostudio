@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 관리 캘린더</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .calendar-container {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            font-size: 24px;
+        }
+        .subheader {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #555;
+        }
+        .weekday-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .day, .empty-day {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+        .day:hover {
+            background-color: #e6e6e6;
+        }
+        .empty-day {
+            background-color: transparent;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+<div class="calendar-container">
+    <div class="header">예약 관리 캘린더</div>
+    <div class="subheader" th:text="${year} + '년 ' + ${month} + '월'">2024년 06월</div>
+    <div class="weekday-header">
+        <div>일</div>
+        <div>월</div>
+        <div>화</div>
+        <div>수</div>
+        <div>목</div>
+        <div>금</div>
+        <div>토</div>
+    </div>
+    <div class="calendar">
+        <!-- 공백 채우기: 6월 1일이 토요일이므로 앞에 6일간의 공백이 필요 -->
+        <div class="empty-day"></div><div class="empty-day"></div><div class="empty-day"></div><div class="empty-day"></div><div class="empty-day"></div><div class="empty-day"></div>
+        <div th:each="day : ${days}" class="day">
+            <a th:text="${day}" th:href="@{'/reservation/date/' + ${year} + '-' + ${month} + '-' + ${day} }"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

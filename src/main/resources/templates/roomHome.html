@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>룸 정보 - 포토스튜디오 관리 프로그램</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .container {
+            padding: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        .room {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .room img {
+            width: 400px;
+            height: 400px;
+            object-fit: cover;
+        }
+        .actions {
+            margin-top: 10px;
+        }
+        .actions button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>룸 정보</h1>
+</header>
+<nav>
+    <a href="index.html">홈</a>
+    <a href="reservation_list.html">예약 현황</a>
+    <a href="equipment.html">장비 현황</a>
+    <a href="rooms.html">룸 정보</a>
+    <a href="members.html">회원 정보</a>
+</nav>
+<div class="container">
+    <h2>룸 정보</h2>
+    <a href="/rooms/new" class="actions"><button>룸 추가</button></a>
+    <div th:each="room : ${rooms}" class="room">
+        <h3 th:text="${room.name}">룸 이름</h3>
+        <p th:text="'수용 인원: ' + ${room.capacity} + '명'">수용 인원</p>
+        <p th:text="'가격: ' + ${room.price} + '원'">가격</p>
+        <img th:src="${room.image_path}" alt="룸 이미지" class="room-image">
+        <div class="actions">
+            <a th:href="'/rooms/edit/' + ${room.id}"><button>편집</button></a>
+            <a th:href="'/rooms/delete/' + ${room.id}" th:onclick="'return confirm(\'정말 삭제하시겠습니까?\');'"><button>삭제</button></a>
+        </div>
+    </div>
+</div>
+<footer>
+    &copy; 2024 포토스튜디오 관리 프로그램
+</footer>
+</body>
+</html>

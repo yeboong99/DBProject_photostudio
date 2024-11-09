@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 추가</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            font-size: 24px;
+        }
+        .reservation-form {
+            margin-top: 20px;
+        }
+        .reservation-form div {
+            margin-bottom: 10px;
+        }
+        .reservation-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .reservation-form input,
+        .reservation-form select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .reservation-form .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .reservation-form .checkbox-group label {
+            flex: 1 1 30%;
+            margin-right: 10px;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">예약 추가 - <span th:text="${date}"></span></div>
+    <form class="reservation-form" th:action="@{/reservation/add}" method="post">
+        <input type="hidden" name="date" th:value="${date}"/>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+        <div>
+            <label for="customer">고객</label>
+            <select id="customer" name="customerId" required>
+                <option th:each="customer : ${customerList}" th:value="${customer.id}" th:text="${customer.name}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="room">방</label>
+            <select id="room" name="roomId" required>
+                <option th:each="room : ${roomList}" th:value="${room.id}" th:text="${room.name}"></option>
+            </select>
+        </div>
+        <div>
+            <label>물품 (반드시 4개 선택)</label>
+            <div class="checkbox-group">
+                <label th:each="equipment : ${equipmentList}">
+                    <input type="checkbox" name="equipmentIds" th:value="${equipment.id}"/> <span th:text="${equipment.name}"></span>
+                </label>
+            </div>
+        </div>
+        <div>
+            <label for="time">시간</label>
+            <select id="time" name="timeSlot" required>
+                <option value="10:00-11:00">10:00 ~ 11:00</option>
+                <option value="11:00-12:00">11:00 ~ 12:00</option>
+                <option value="12:00-13:00">12:00 ~ 13:00</option>
+                <option value="13:00-14:00">13:00 ~ 14:00</option>
+                <option value="14:00-15:00">14:00 ~ 15:00</option>
+                <option value="15:00-16:00">15:00 ~ 16:00</option>
+                <option value="16:00-17:00">16:00 ~ 17:00</option>
+                <option value="17:00-18:00">17:00 ~ 18:00</option>
+                <option value="18:00-19:00">18:00 ~ 19:00</option>
+                <option value="19:00-20:00">19:00 ~ 20:00</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">추가</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

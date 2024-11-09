@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>예약 목록 - <span th:text="${date}">2024-06-07</span></h1>
+        <a th:href="@{'/reservation/addForm/' + ${date}}" class="btn">예약 추가</a>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>고객</th>
+            <th>방</th>
+            <th>날짜</th>
+            <th>시간</th>
+            <th>총 가격</th>
+            <th>대여 장비</th>
+            <th>액션</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reservation : ${reservations}">
+            <td th:text="${reservation.customerId.name}"></td>
+            <td th:text="${reservation.roomId.name}"></td>
+            <td th:text="${reservation.reservationDate}"></td>
+            <td th:text="${reservation.startTime + ' - ' + reservation.endTime}"></td>
+            <td th:text="${reservation.totalPrice}"></td>
+            <td>
+                <span th:each="equipment, iterStat : ${reservation.equipments}"
+                      th:text="${equipment.name} + (iterStat.last ? '' : ', ')"></span>
+            </td>
+            <td>
+                <form th:action="@{'/reservation/edit/' + ${reservation.id}}" method="get" style="display:inline;">
+                    <button type="submit" class="btn btn-secondary">편집</button>
+                </form>
+                <form th:action="@{'/reservation/delete/' + ${reservation.id} + '?date=' + ${date}}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-secondary">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
